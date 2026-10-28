@@ -5,6 +5,7 @@ import Productos from './pages/Productos.jsx';
 import Catalogo from './pages/Catalogo.jsx';
 import Kardex from './pages/Kardex.jsx';
 import Icon from './components/ui/Icon.jsx';
+import { demoMode } from './services/api.js';
 
 const menus = [
   { to: '/', texto: 'Dashboard', icono: 'dashboard' },
@@ -70,6 +71,12 @@ export default function App() {
           </div>
         </header>
         <main className="app-content">
+          {demoMode && (
+            <div className="alert alert-info d-flex flex-wrap align-items-center gap-2 mb-4 shadow-sm" role="status">
+              <strong>Modo demostración</strong>
+              <span>Los datos de ejemplo y tus cambios se guardan solamente en este navegador. No están conectados a MySQL.</span>
+            </div>
+          )}
           <div className="container-fluid px-0">
             <Routes>
               <Route path="/" element={<Dashboard />} />
