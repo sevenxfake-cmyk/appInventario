@@ -48,8 +48,8 @@ export default function App() {
         </nav>
 
         <div className="sidebar-bottom mt-auto">
-          <div className="environment-label"><span className="online-indicator" /> Entorno local</div>
-          <p className="mb-0 small">React + Express + MySQL</p>
+          <div className="environment-label"><span className="online-indicator" /> {demoMode ? 'Modo demostración' : 'Entorno local'}</div>
+          <p className="mb-0 small">{demoMode ? 'Datos guardados en este navegador' : 'React + Express + MySQL'}</p>
           <div className="small opacity-50 mt-1">Proyecto académico · SENATI</div>
         </div>
       </aside>
