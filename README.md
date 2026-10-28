@@ -1,45 +1,33 @@
-# appInventario — Panel administrativo SENATI
+# SENATI — Inventario React + Bootstrap
 
-Aplicación React + Vite + Bootstrap 5 para administrar inventario mediante la API REST del repositorio **miApi**.
+Frontend para el proyecto de inventario con Dashboard, Categorías, Proveedores, Productos y Kardex.
 
-## Diseño actualizado
+## Producción (Vercel)
 
-Interfaz responsive con menú lateral (en móviles se abre con el botón de menú), colores consistentes y tablas mejoradas. **No se agregaron librerías de gráficos**: los gráficos usan las barras de progreso de Bootstrap y CSS.
+Cuando se publica en Vercel **sin configurar una URL HTTPS para la API** mediante `VITE_API_URL`, se activa un **modo demostración claramente identificado**. Los productos y movimientos de ejemplo se guardan en `localStorage`, por lo que funcionan solo en ese navegador, no son una base MySQL compartida y pueden perderse si se borran los datos del navegador.
 
-### Dashboard con datos reales de la API
-- Total de productos.
-- Productos con bajo stock o agotados (umbral: 5 unidades).
-- Valor estimado de existencias: precio de cada producto multiplicado por su stock.
-- Número de movimientos del Kardex.
-- Distribución de productos por categoría (cinco principales).
-- Estado de stock: normal, bajo, agotado.
-- Actividad de los últimos 7 días (según los movimientos recuperados).
-- Últimos cinco movimientos registrados.
+El modo demostración incorpora CRUD de categorías, proveedores y productos, y movimientos Kardex con actualización simultánea de las existencias. Los gráficos del Dashboard se calculan a partir de estos datos de demostración.
 
-### Páginas
-- Dashboard: tarjetas y gráficos dinámicos.
-- Productos: formulario relacional, listado, búsqueda, filtros de stock y etiquetas visuales.
-- Categorías: altas, edición, eliminación, listado.
-- Proveedores: altas, edición, eliminación, listado.
-- Kardex: Entradas, Salidas, Ajustes e historial filtrable.
+El archivo `vercel.json` permite abrir rutas internas de React Router directamente.
 
-## Cómo usarlo en la PC de SENATI
+## Modo real con MySQL
 
-En ambos proyectos utiliza la rama **feature/inventario-relacional**. El backend miApi debe estar funcionando con MySQL en el puerto 3006 y tener ejecutada la migración del esquema.
+Para utilizar datos reales de forma compartida en Internet es necesario publicar el backend `miApi` con una base de datos MySQL accesible desde ese backend, proteger las rutas con autenticación y configurar en Vercel:
 
-En el directorio del frontend:
-
-```powershell
-git pull origin feature/inventario-relacional
-npm.cmd install
-npm.cmd run dev
+```
+VITE_API_URL=https://URL-HTTPS-REAL-DE-TU-API
 ```
 
-Abre http://localhost:5173. React consulta los endpoints /dashboard/resumen, /productos, /categorias y /movimientos; la información no está simulada.
+Luego volver a desplegar el frontend. No uses `localhost:3006` como URL de API en Vercel: ese localhost sería el de cada visitante.
 
-## Notas
+## Uso local en la PC de SENATI
 
-- El backend devuelve como máximo 300 movimientos recientes; la serie de siete días corresponde a los movimientos disponibles en esa respuesta y no necesariamente a todo el histórico si supera 300.
-- La pantalla Usuarios no incorpora login; el administrador se crea mediante el script de miApi y el responsable del Kardex es académico, sin autenticación.
-- La aplicación no debe publicarse para uso real sin autenticación ni autorización.
-- Si actualizas mientras el frontend ya está ejecutándose, reinicia Vite si es necesario.
+En `localhost` la aplicación usa el backend real `http://localhost:3006` por defecto y NO entra en modo demo.
+
+1. Ejecutar MySQL y la API del repositorio `miApi` (rama `feature/inventario-relacional`).
+2. En el frontend: `npm install` y `npm run dev`.
+3. Abrir `http://localhost:5173`.
+
+## Tecnologías
+
+React, Vite, Bootstrap 5, react-router-dom y Axios. Sin dependencia adicional de gráficos: las barras y tarjetas están construidas con Bootstrap y CSS.
