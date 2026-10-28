@@ -1,34 +1,24 @@
-# Laboratorio #8 — Frontend React y API REST
+# Inventario relacional — Frontend React (SENATI)
 
-Frontend del Laboratorio #8 de **Full Stack Developer Software — Seminario IA 501**.
+Ampliación de appInventario con react-router-dom y panel administrativo.
+Se conecta al backend miApi en http://localhost:3006.
 
-Se conecta al backend [miApi](https://github.com/sevenxfake-cmyk/miApi) (Laboratorio #7, ampliado en el paso 7 del Laboratorio #8). **Este repositorio contiene solamente el frontend.**
+## Vistas
+- Inicio: indicadores de productos, bajo stock (5 o menos), categorías, proveedores y movimientos.
+- Productos: formulario con select dinámico de categorías y proveedores. No permite cambiar stock directamente.
+- Categorías: CRUD.
+- Proveedores: CRUD.
+- Kardex: Entrada, Salida y Ajuste, con tabla de historial y responsable.
 
-## Pasos de la guía implementados
+## Cómo probar en SENATI
+1. Guarda un respaldo de APIDB en HeidiSQL antes de cambiar el esquema.
+2. En miApi, selecciona la misma rama feature/inventario-relacional, ejecuta npm install y npm run migrate.
+3. Añade ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD en el .env local y ejecuta npm run seed:admin.
+4. Inicia miApi con npm run dev (puerto 3006).
+5. En este frontend ejecuta npm install y npm run dev (puerto 5173).
+6. Crea categorías, productos y realiza movimientos para ver los cambios de stock y el Dashboard.
+7. Comprueba en HeidiSQL las tablas categorias, proveedores, usuarios, movimientos y Productos.
 
-- **Paso 2:** importación de Bootstrap en `src/main.jsx`.
-- **Paso 3:** conexión Axios al backend en `src/services/api.js`.
-- **Paso 4:** componente `src/components/Productos/crudProductos.jsx` con formulario, listado, edición y eliminación.
-- **Paso 5:** integración en `src/App.jsx` con barra de navegación «SENATI - React CRUD API Rest».
-- **Paso 7:** rutas GET, POST, PUT y DELETE de `/productos` agregadas al `index.js` del repositorio backend `miApi`.
+No hay login todavía; usuario responsable no verifica identidad. Autenticación y protección de rutas quedan como investigación futura, conforme al enunciado.
 
-## Tecnologías
-
-React, Vite, Axios y Bootstrap; backend independiente Node.js + Express + Sequelize + MySQL.
-
-## En la PC de SENATI
-
-1. Clonar ambos repositorios: `miApi` y `appInventario`.
-2. En HeidiSQL/MySQL, configurar la base `APIDB` y crear el archivo local `miApi/.env` con credenciales `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT` y opcionalmente `PORT=3006`. No subir contraseñas a GitHub.
-3. En `miApi`, ejecutar `npm install` y `npm run dev`. El puerto predeterminado del código es 3006; una variable `PORT` local lo puede sobrescribir.
-4. En `appInventario`, ejecutar `npm install` y `npm run dev`. Vite mostrará la URL (normalmente `http://localhost:5173`).
-5. Abrir React, probar registrar, listar, editar y eliminar productos.
-6. Verificar registros en HeidiSQL y probar GET/POST/PUT/DELETE con Postman.
-
-La URL del backend en React puede configurarse mediante `VITE_API_URL` (ver `.env.example`). Sin esa variable, React usa `http://localhost:3006`.
-
-## Entrega
-
-Documentar en PDF las capturas de código, terminal sin errores, navegador, HeidiSQL y Postman, según la guía del instructor.
-
-> Código subido a GitHub; instalación y pruebas de ejecución pendientes para la PC de SENATI.
+Se trata de código preparado sin ejecución ni pruebas en la máquina del usuario.
