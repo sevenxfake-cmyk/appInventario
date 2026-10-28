@@ -1,24 +1,33 @@
-# Inventario relacional — Frontend React (SENATI)
+# SENATI — Inventario React + Bootstrap
 
-Ampliación de appInventario con react-router-dom y panel administrativo.
-Se conecta al backend miApi en http://localhost:3006.
+Frontend para el proyecto de inventario con Dashboard, Categorías, Proveedores, Productos y Kardex.
 
-## Vistas
-- Inicio: indicadores de productos, bajo stock (5 o menos), categorías, proveedores y movimientos.
-- Productos: formulario con select dinámico de categorías y proveedores. No permite cambiar stock directamente.
-- Categorías: CRUD.
-- Proveedores: CRUD.
-- Kardex: Entrada, Salida y Ajuste, con tabla de historial y responsable.
+## Producción (Vercel)
 
-## Cómo probar en SENATI
-1. Guarda un respaldo de APIDB en HeidiSQL antes de cambiar el esquema.
-2. En miApi, selecciona la misma rama feature/inventario-relacional, ejecuta npm install y npm run migrate.
-3. Añade ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD en el .env local y ejecuta npm run seed:admin.
-4. Inicia miApi con npm run dev (puerto 3006).
-5. En este frontend ejecuta npm install y npm run dev (puerto 5173).
-6. Crea categorías, productos y realiza movimientos para ver los cambios de stock y el Dashboard.
-7. Comprueba en HeidiSQL las tablas categorias, proveedores, usuarios, movimientos y Productos.
+Cuando se publica en Vercel **sin configurar una URL HTTPS para la API** mediante `VITE_API_URL`, se activa un **modo demostración claramente identificado**. Los productos y movimientos de ejemplo se guardan en `localStorage`, por lo que funcionan solo en ese navegador, no son una base MySQL compartida y pueden perderse si se borran los datos del navegador.
 
-No hay login todavía; usuario responsable no verifica identidad. Autenticación y protección de rutas quedan como investigación futura, conforme al enunciado.
+El modo demostración incorpora CRUD de categorías, proveedores y productos, y movimientos Kardex con actualización simultánea de las existencias. Los gráficos del Dashboard se calculan a partir de estos datos de demostración.
 
-Se trata de código preparado sin ejecución ni pruebas en la máquina del usuario.
+El archivo `vercel.json` permite abrir rutas internas de React Router directamente.
+
+## Modo real con MySQL
+
+Para utilizar datos reales de forma compartida en Internet es necesario publicar el backend `miApi` con una base de datos MySQL accesible desde ese backend, proteger las rutas con autenticación y configurar en Vercel:
+
+```
+VITE_API_URL=https://URL-HTTPS-REAL-DE-TU-API
+```
+
+Luego volver a desplegar el frontend. No uses `localhost:3006` como URL de API en Vercel: ese localhost sería el de cada visitante.
+
+## Uso local en la PC de SENATI
+
+En `localhost` la aplicación usa el backend real `http://localhost:3006` por defecto y NO entra en modo demo.
+
+1. Ejecutar MySQL y la API del repositorio `miApi` (rama `feature/inventario-relacional`).
+2. En el frontend: `npm install` y `npm run dev`.
+3. Abrir `http://localhost:5173`.
+
+## Tecnologías
+
+React, Vite, Bootstrap 5, react-router-dom y Axios. Sin dependencia adicional de gráficos: las barras y tarjetas están construidas con Bootstrap y CSS.
