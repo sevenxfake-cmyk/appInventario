@@ -74,8 +74,8 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/productos" element={<Productos />} />
-              <Route path="/categorias" element={<Catalogo tipo="categorias" />} />
-              <Route path="/proveedores" element={<Catalogo tipo="proveedores" />} />
+              <Route path="/categorias" element={<Catalogo key="categorias" tipo="categorias" />} />
+              <Route path="/proveedores" element={<Catalogo key="proveedores" tipo="proveedores" />} />
               <Route path="/kardex" element={<Kardex />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
