@@ -2,29 +2,33 @@
 
 Frontend del Laboratorio #8 de **Full Stack Developer Software — Seminario IA 501**.
 
-Se conecta al backend independiente [miApi](https://github.com/sevenxfake-cmyk/miApi) desarrollado en el Laboratorio #7. **Este repositorio solo contiene el frontend**.
+Se conecta al backend [miApi](https://github.com/sevenxfake-cmyk/miApi) (Laboratorio #7, ampliado en el paso 7 del Laboratorio #8). **Este repositorio contiene solamente el frontend.**
+
+## Pasos de la guía implementados
+
+- **Paso 2:** importación de Bootstrap en `src/main.jsx`.
+- **Paso 3:** conexión Axios al backend en `src/services/api.js`.
+- **Paso 4:** componente `src/components/Productos/crudProductos.jsx` con formulario, listado, edición y eliminación.
+- **Paso 5:** integración en `src/App.jsx` con barra de navegación «SENATI - React CRUD API Rest».
+- **Paso 7:** rutas GET, POST, PUT y DELETE de `/productos` agregadas al `index.js` del repositorio backend `miApi`.
 
 ## Tecnologías
-React, Vite, Axios y Bootstrap.
 
-## Estructura
-- `src/components/Productos/crudProductos.jsx`: formulario y tabla CRUD.
-- `src/services/api.js`: cliente Axios para consumir la API.
-- `src/App.jsx`: integra la pantalla de gestión.
-- `src/main.jsx`: arranque de React e importación de Bootstrap.
-- `.env.example`: URL de ejemplo para el backend.
+React, Vite, Axios y Bootstrap; backend independiente Node.js + Express + Sequelize + MySQL.
 
-## En la PC del laboratorio
-1. Tener MySQL activo y la base `APIDB` configurada en `miApi`.
-2. Verificar que el backend `miApi` tenga las rutas GET, POST, PUT y DELETE en `/productos` y se ejecute en `http://localhost:3006`. Las rutas CRUD **no forman parte del Laboratorio #7 original** y deben agregarse en ese repositorio como parte del Laboratorio #8.
-3. En `miApi`, ejecutar `npm install` y `npm run dev`.
-4. Clonar este repositorio y ejecutar `npm install` y `npm run dev`.
-5. Abrir la URL que Vite imprima (normalmente `http://localhost:5173`) y probar el CRUD.
-6. Revisar los datos en HeidiSQL y realizar las pruebas de Postman.
+## En la PC de SENATI
 
-La URL del backend es configurable mediante `VITE_API_URL` (ver `.env.example`); si no se configura, usa `http://localhost:3006`.
+1. Clonar ambos repositorios: `miApi` y `appInventario`.
+2. En HeidiSQL/MySQL, configurar la base `APIDB` y crear el archivo local `miApi/.env` con credenciales `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT` y opcionalmente `PORT=3006`. No subir contraseñas a GitHub.
+3. En `miApi`, ejecutar `npm install` y `npm run dev`. El puerto predeterminado del código es 3006; una variable `PORT` local lo puede sobrescribir.
+4. En `appInventario`, ejecutar `npm install` y `npm run dev`. Vite mostrará la URL (normalmente `http://localhost:5173`).
+5. Abrir React, probar registrar, listar, editar y eliminar productos.
+6. Verificar registros en HeidiSQL y probar GET/POST/PUT/DELETE con Postman.
+
+La URL del backend en React puede configurarse mediante `VITE_API_URL` (ver `.env.example`). Sin esa variable, React usa `http://localhost:3006`.
 
 ## Entrega
-Documentar capturas del código, terminal, navegador, HeidiSQL y Postman en un PDF según la guía del instructor.
 
-> El código se entrega sin instalación ni pruebas locales previas; la ejecución está pendiente en la PC de SENATI.
+Documentar en PDF las capturas de código, terminal sin errores, navegador, HeidiSQL y Postman, según la guía del instructor.
+
+> Código subido a GitHub; instalación y pruebas de ejecución pendientes para la PC de SENATI.
