@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard.jsx';
 import Productos from './pages/Productos.jsx';
@@ -6,6 +6,8 @@ import Catalogo from './pages/Catalogo.jsx';
 import Kardex from './pages/Kardex.jsx';
 import Icon from './components/ui/Icon.jsx';
 import { demoMode } from './services/api.js';
+import { obtenerSesion, guardarSesion, cerrarSesion } from './services/auth.js';
+import Login from './pages/Login.jsx';
 
 const menus = [
   { to: '/', texto: 'Dashboard', icono: 'dashboard' },
@@ -17,8 +19,19 @@ const menus = [
 
 export default function App() {
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [sesion, setSesion] = useState(() => obtenerSesion());
+  useEffect(() => {
+    const expirar = () => setSesion(null);
+    window.addEventListener('inventario:sesion-expirada', expirar);
+    return () => window.removeEventListener('inventario:sesion-expirada', expirar);
+  }, []);
+  function entrar(datos) { guardarSesion(datos); setSesion(obtenerSesion()); }
+  function salir() { cerrarSesion(); setSesion(null); }
+
   const { pathname } = useLocation();
   const seccion = menus.find(m => m.to === pathname)?.texto || 'Dashboard';
+
+  if (!demoMode && !sesion) return <Login onLogin={entrar} />;
 
   return (
     <div className="app-shell">
@@ -51,6 +64,7 @@ export default function App() {
           <div className="environment-label"><span className="online-indicator" /> {demoMode ? 'Modo demostración' : 'Entorno local'}</div>
           <p className="mb-0 small">{demoMode ? 'Datos guardados en este navegador' : 'React + Express + MySQL'}</p>
           <div className="small opacity-50 mt-1">Proyecto académico · SENATI</div>
+          {!demoMode && <button type="button" onClick={salir} className="btn btn-sm btn-outline-light mt-3 w-100">Cerrar sesión</button>}
         </div>
       </aside>
 
@@ -67,7 +81,8 @@ export default function App() {
           </div>
           <div className="d-none d-sm-flex align-items-center gap-2">
             <span className="topbar-status"><span className="online-indicator" /> Gestión de inventario</span>
-            <div className="avatar-initials" title="Sistema SENATI">SI</div>
+            <div className="avatar-initials" title={sesion?.usuario?.nombre || 'Sistema SENATI'}>{sesion?.usuario?.nombre?.slice(0, 2).toUpperCase() || 'SI'}</div>
+            {!demoMode && <button type="button" onClick={salir} className="btn btn-sm btn-outline-secondary">Salir</button>}
           </div>
         </header>
         <main className="app-content">

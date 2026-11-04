@@ -31,3 +31,16 @@ En `localhost` la aplicación usa el backend real `http://localhost:3006` por de
 ## Tecnologías
 
 React, Vite, Bootstrap 5, react-router-dom y Axios. Sin dependencia adicional de gráficos: las barras y tarjetas están construidas con Bootstrap y CSS.
+
+## Laboratorio #10 — Inicio de sesión JWT
+
+En la rama `feature/laboratorio-10-seguridad` el frontend requiere login cuando está conectado a la API real (localhost o `VITE_API_URL` HTTPS). La versión de demostración sin backend continúa identificada como demo y **no usa JWT ni MySQL**.
+
+1. Actualizar el backend miApi a la misma rama, configurar `JWT_SECRET`, iniciar MySQL y ejecutar `npm install` y `npm run dev` (puerto 3006).
+2. En esta carpeta ejecutar `npm install` y `npm run dev` (puerto 5173).
+3. Registrar un usuario mediante Postman en `POST http://localhost:3006/api/auth/register` o utilizar el administrador previamente creado con `npm run seed:admin`.
+4. Abrir `http://localhost:5173`, entrar con el correo y contraseña y probar CRUD de productos y Kardex.
+
+Axios envía el JWT en `Authorization: Bearer TOKEN` a la API bajo `/api`. La sesión se conserva solamente en `sessionStorage` de la pestaña, se elimina al cerrar sesión y se invalida ante respuestas 401. Nunca guardar contraseñas o `JWT_SECRET` en el frontend.
+
+Para documentar las pruebas y el procedimiento completo consultar `LABORATORIO-10.md` en miApi.
