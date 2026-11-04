@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../services/api.js';
+import api, { demoMode } from '../services/api.js';
+import { obtenerSesion } from '../services/auth.js';
 import Icon from '../components/ui/Icon.jsx';
 
 const inicial = { id: null, nombre: '', descripcion: '', precio: '', categoria_id: '', proveedor_id: '' };
 
 export default function Productos() {
+  const puedeEliminar = demoMode || obtenerSesion()?.usuario?.rol === 'Administrador';
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [proveedores, setProveedores] = useState([]);
@@ -167,7 +169,7 @@ export default function Productos() {
                       <td className="fw-semibold">S/ {Number(p.precio).toFixed(2)}</td>
                       <td><span className={`stock-pill ${Number(p.stock) === 0 ? 'stock-none' : Number(p.stock) <= 5 ? 'stock-low' : 'stock-ok'}`}>{p.stock} uds.</span></td>
                       <td className="text-nowrap"><button className="btn btn-sm btn-outline-primary me-1" onClick={() => editar(p)}>Editar</button>
-                        <button className="btn btn-sm btn-outline-danger" onClick={() => eliminar(p.id)}>Eliminar</button></td>
+                        <button className="btn btn-sm btn-outline-danger" disabled={!puedeEliminar} title={puedeEliminar ? "Eliminar producto" : "Solo Administrador"} onClick={() => eliminar(p.id)}>Eliminar</button></td>
                     </tr>
                   ))}
                   {!visibles.length && <tr><td colSpan="6"><div className="empty-block">No se encontraron productos con esos filtros.</div></td></tr>}
