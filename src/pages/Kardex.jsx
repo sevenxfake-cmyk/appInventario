@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../services/api.js';
+import api, { demoMode } from '../services/api.js';
+import { obtenerSesion } from '../services/auth.js';
 import Icon from '../components/ui/Icon.jsx';
 
 const inicial = { producto_id: '', usuario_id: '', tipo_movimiento: 'Entrada', cantidad: '', observaciones: '' };
@@ -18,7 +19,7 @@ export default function Kardex() {
   const cargar = useCallback(async () => {
     try {
       const [p, u, m] = await Promise.all([
-        api.get('/productos'), api.get('/usuarios'), api.get('/movimientos')
+        api.get('/productos'), demoMode ? api.get('/usuarios') : Promise.resolve({ data: [] }), api.get('/movimientos')
       ]);
       setProductos(p.data);
       setUsuarios(u.data);
@@ -33,7 +34,7 @@ export default function Kardex() {
     try {
       await api.post('/movimientos', {
         producto_id: Number(form.producto_id),
-        usuario_id: Number(form.usuario_id),
+        ...(demoMode ? { usuario_id: Number(form.usuario_id) } : {}),
         tipo_movimiento: form.tipo_movimiento,
         cantidad: Number(form.cantidad),
         observaciones: form.observaciones
@@ -59,7 +60,7 @@ export default function Kardex() {
         <div className="col-sm-4"><div className="card"><div className="card-body py-3"><div className="metric-label">Entradas recientes</div><div className="fw-bold fs-3 text-success">{movimientos.filter(m => m.tipo_movimiento === 'Entrada').length}</div></div></div></div>
         <div className="col-sm-4"><div className="card"><div className="card-body py-3"><div className="metric-label">Salidas recientes</div><div className="fw-bold fs-3 text-danger">{movimientos.filter(m => m.tipo_movimiento === 'Salida').length}</div></div></div></div>
       </div>
-      {!usuarios.length && <div className="alert alert-warning">
+      {demoMode && !usuarios.length && <div className="alert alert-warning">
         Primero crea un usuario administrador con el comando npm run seed:admin del backend. El responsable se elige solo para esta práctica; todavía no hay login.
       </div>}
       {!productos.length && <div className="alert alert-warning">
@@ -80,13 +81,13 @@ export default function Kardex() {
                 {productos.map(p => <option key={p.id} value={p.id}>{p.nombre} (stock: {p.stock})</option>)}
               </select>
             </label>
-            <label className="form-label">Responsable
+            {demoMode ? <label className="form-label">Responsable (demostración)
               <select className="form-select" required value={form.usuario_id}
                 onChange={e => setForm({ ...form, usuario_id: e.target.value })}>
                 <option value="">Seleccionar usuario</option>
                 {usuarios.map(u => <option key={u.id} value={u.id}>{u.nombre} — {u.rol}</option>)}
               </select>
-            </label>
+            </label> : <div className="alert alert-light border small">Responsable autenticado: <strong>{obtenerSesion()?.usuario?.nombre || 'Usuario conectado'}</strong>. Se registra automáticamente desde el JWT.</div>}
             <label className="form-label">Tipo de movimiento
               <select className="form-select" value={form.tipo_movimiento}
                 onChange={e => setForm({ ...form, tipo_movimiento: e.target.value, cantidad: '' })}>
@@ -102,7 +103,7 @@ export default function Kardex() {
               <textarea className="form-control" rows="2" value={form.observaciones}
                 onChange={e => setForm({ ...form, observaciones: e.target.value })} />
             </label>
-            <button className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2" disabled={guardando || !usuarios.length || !productos.length}><Icon name="plus" size={17}/> Registrar movimiento</button>
+            <button className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2" disabled={guardando || (demoMode && !usuarios.length) || !productos.length}><Icon name="plus" size={17}/> Registrar movimiento</button>
             </div>
           </form>
         </div>
