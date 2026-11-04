@@ -26,14 +26,14 @@ export default function Login({ onLogin }) {
       <div className="card border-0 shadow-lg w-100" style={{ maxWidth: 435 }}>
         <div className="card-body p-4 p-sm-5">
           <div className="d-flex align-items-center gap-3 mb-4">
-            <div className="brand-mark">S</div>
+            <div className="brand-mark">M</div>
             <div>
-              <h1 className="h4 fw-bold mb-0">SENATI Inventory</h1>
-              <div className="text-secondary small">Acceso seguro al inventario</div>
+              <h1 className="h4 fw-bold mb-0">Mi Tienda 360</h1>
+              <div className="text-secondary small">Ventas e inventario en un solo lugar</div>
             </div>
           </div>
           <h2 className="h5 fw-bold">Iniciar sesión</h2>
-          <p className="text-secondary small mb-4">Ingresa con tu usuario registrado en la API.</p>
+          <p className="text-secondary small mb-4">Ingresa a tu cuenta para administrar tu tienda.</p>
           {error && <div className="alert alert-danger" role="alert">{error}</div>}
           <form onSubmit={ingresar}>
             <label className="form-label w-100">Correo electrónico
