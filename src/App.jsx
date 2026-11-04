@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import Productos from './pages/Productos.jsx';
 import Catalogo from './pages/Catalogo.jsx';
 import Kardex from './pages/Kardex.jsx';
+import Ventas from './pages/Ventas.jsx';
+import HistorialVentas from './pages/HistorialVentas.jsx';
 import Icon from './components/ui/Icon.jsx';
 import { demoMode } from './services/api.js';
 import { obtenerSesion, guardarSesion, cerrarSesion } from './services/auth.js';
@@ -12,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 const menus = [
   { to: '/', texto: 'Dashboard', icono: 'dashboard' },
+  { to: '/ventas', texto: 'Nueva venta', icono: 'money' },
+  { to: '/historial-ventas', texto: 'Historial de ventas', icono: 'clock' },
   { to: '/productos', texto: 'Productos', icono: 'product' },
   { to: '/categorias', texto: 'Categorías', icono: 'category' },
   { to: '/proveedores', texto: 'Proveedores', icono: 'supplier' },
@@ -31,6 +35,9 @@ export default function App() {
 
   const { pathname } = useLocation();
   const seccion = menus.find(m => m.to === pathname)?.texto || 'Dashboard';
+  const usuario = sesion?.usuario?.nombre || (demoMode ? 'Invitado' : 'Usuario');
+  const rol = sesion?.usuario?.rol || (demoMode ? 'Vista de demostración' : 'Usuario');
+  const iniciales = usuario.split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase();
 
   if (!demoMode && !sesion) return (
     <Routes>
@@ -44,10 +51,10 @@ export default function App() {
       {menuAbierto && <button className="sidebar-backdrop d-lg-none" aria-label="Cerrar menú" onClick={() => setMenuAbierto(false)} />}
       <aside className={`app-sidebar ${menuAbierto ? 'is-open' : ''}`}>
         <div className="sidebar-brand">
-          <div className="brand-mark">S</div>
+          <div className="brand-mark">M</div>
           <div>
-            <div className="brand-title">SENATI <span>Inventory</span></div>
-            <div className="brand-subtitle">Sistema de gestión</div>
+            <div className="brand-title">Mi Tienda <span>360</span></div>
+            <div className="brand-subtitle">Ventas e inventario</div>
           </div>
           <button className="btn btn-sm text-white ms-auto d-lg-none" aria-label="Cerrar menú" onClick={() => setMenuAbierto(false)}>
             <Icon name="close" />
@@ -67,9 +74,9 @@ export default function App() {
         </nav>
 
         <div className="sidebar-bottom mt-auto">
+          <div className="sidebar-user"><span className="sidebar-avatar">{iniciales || "U"}</span><span><strong>{usuario}</strong><small>{rol}</small></span></div>
           <div className="environment-label"><span className="online-indicator" /> {demoMode ? 'Modo demostración' : 'Entorno local'}</div>
-          <p className="mb-0 small">{demoMode ? 'Datos guardados en este navegador' : 'React + Express + MySQL'}</p>
-          <div className="small opacity-50 mt-1">Proyecto académico · SENATI</div>
+          <p className="mb-0 small">{demoMode ? 'Datos solo en este navegador' : 'Datos conectados a la tienda'}</p>
           {!demoMode && <button type="button" onClick={salir} className="btn btn-sm btn-outline-light mt-3 w-100">Cerrar sesión</button>}
         </div>
       </aside>
@@ -81,13 +88,13 @@ export default function App() {
               <Icon name="menu"/>
             </button>
             <div>
-              <div className="topbar-overline">Panel administrativo <span className="mx-1">/</span> {seccion}</div>
+              <div className="topbar-overline">Gestión comercial <span className="mx-1">/</span> {seccion}</div>
               <div className="topbar-heading">{seccion}</div>
             </div>
           </div>
           <div className="d-none d-sm-flex align-items-center gap-2">
-            <span className="topbar-status"><span className="online-indicator" /> Gestión de inventario</span>
-            <div className="avatar-initials" title={sesion?.usuario?.nombre || 'Sistema SENATI'}>{sesion?.usuario?.nombre?.slice(0, 2).toUpperCase() || 'SI'}</div>
+            <span className="topbar-status"><span className="online-indicator" /> Sistema conectado</span>
+            <div className="header-user"><span className="avatar-initials">{iniciales || "U"}</span><span><strong>{usuario}</strong><small>{rol}</small></span></div>
             {!demoMode && <button type="button" onClick={salir} className="btn btn-sm btn-outline-secondary">Salir</button>}
           </div>
         </header>
@@ -103,13 +110,15 @@ export default function App() {
               <Route path="/login" element={<Navigate to="/" replace />} />
               <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/productos" element={<ProtectedRoute><Productos /></ProtectedRoute>} />
+              <Route path="/ventas" element={<ProtectedRoute><Ventas /></ProtectedRoute>} />
+              <Route path="/historial-ventas" element={<ProtectedRoute><HistorialVentas /></ProtectedRoute>} />
               <Route path="/categorias" element={<ProtectedRoute><Catalogo key="categorias" tipo="categorias" /></ProtectedRoute>} />
               <Route path="/proveedores" element={<ProtectedRoute><Catalogo key="proveedores" tipo="proveedores" /></ProtectedRoute>} />
               <Route path="/kardex" element={<ProtectedRoute><Kardex /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
-          <footer className="app-footer">SENATI · Full Stack Developer Software <span>Inventario administrativo</span></footer>
+          <footer className="app-footer">Mi Tienda 360 <span>Control de ventas e inventario</span></footer>
         </main>
       </div>
     </div>
