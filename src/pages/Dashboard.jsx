@@ -106,9 +106,9 @@ export default function Dashboard() {
       <div className="dashboard-hero mb-4">
         <div className="hero-content d-flex flex-wrap align-items-center justify-content-between gap-4">
           <div>
-            <div className="hero-eyebrow">PANEL DE CONTROL · SENATI</div>
-            <h1 className="hero-title">Tu inventario, bajo control.</h1>
-            <p className="hero-subtitle">Consulta existencias, analiza tus productos y lleva el historial de cada movimiento desde un solo lugar.</p>
+            <div className="hero-eyebrow">RESUMEN DE TU NEGOCIO</div>
+            <h1 className="hero-title">Todo tu negocio, en un solo lugar.</h1>
+            <p className="hero-subtitle">Controla existencias, registra ventas y toma mejores decisiones cada día.</p>
           </div>
           <Link to="/productos" className="btn btn-light hero-action d-inline-flex align-items-center gap-2">
             <Icon name="product" size={18}/> Ver productos <Icon name="arrow" size={16}/>
@@ -120,7 +120,7 @@ export default function Dashboard() {
         <div>
           <div className="page-kicker">RESUMEN GENERAL</div>
           <h2 className="page-title">Estadísticas del inventario</h2>
-          <p className="page-description">Datos calculados desde MySQL mediante la API REST.</p>
+          <p className="page-description">Consulta el estado de tus productos y los movimientos recientes.</p>
         </div>
         <button type="button" onClick={cargar} disabled={cargando} className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-2">
           <Icon name="refresh" size={16}/> Actualizar datos
