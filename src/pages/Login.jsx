@@ -51,7 +51,7 @@ export default function Login({ onLogin }) {
             </button>
           </form>
           <p className="text-secondary small mt-4 mb-0 text-center">
-            Laboratorio #10 · Autenticación JWT
+            Laboratorio #11 · Autenticación JWT y rutas protegidas
           </p>
         </div>
       </div>
