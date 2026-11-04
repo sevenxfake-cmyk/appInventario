@@ -110,9 +110,14 @@ export default function Dashboard() {
             <h1 className="hero-title">Todo tu negocio, en un solo lugar.</h1>
             <p className="hero-subtitle">Controla existencias, registra ventas y toma mejores decisiones cada día.</p>
           </div>
-          <Link to="/productos" className="btn btn-light hero-action d-inline-flex align-items-center gap-2">
-            <Icon name="product" size={18}/> Ver productos <Icon name="arrow" size={16}/>
-          </Link>
+          <div className="d-flex flex-wrap gap-2">
+            <Link to="/ventas" className="btn btn-light hero-action d-inline-flex align-items-center gap-2">
+              <Icon name="money" size={18}/> Nueva venta <Icon name="arrow" size={16}/>
+            </Link>
+            <Link to="/productos" className="btn btn-outline-light d-inline-flex align-items-center gap-2">
+              <Icon name="product" size={18}/> Ver productos
+            </Link>
+          </div>
         </div>
       </div>
 
