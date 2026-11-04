@@ -51,7 +51,7 @@ export default function Login({ onLogin }) {
             </button>
           </form>
           <p className="text-secondary small mt-4 mb-0 text-center">
-            Laboratorio #11 · Autenticación JWT y rutas protegidas
+            Tu información está protegida con acceso seguro.
           </p>
         </div>
       </div>
