@@ -8,6 +8,7 @@ import Icon from './components/ui/Icon.jsx';
 import { demoMode } from './services/api.js';
 import { obtenerSesion, guardarSesion, cerrarSesion } from './services/auth.js';
 import Login from './pages/Login.jsx';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx';
 
 const menus = [
   { to: '/', texto: 'Dashboard', icono: 'dashboard' },
@@ -31,7 +32,12 @@ export default function App() {
   const { pathname } = useLocation();
   const seccion = menus.find(m => m.to === pathname)?.texto || 'Dashboard';
 
-  if (!demoMode && !sesion) return <Login onLogin={entrar} />;
+  if (!demoMode && !sesion) return (
+    <Routes>
+      <Route path="/login" element={<Login onLogin={entrar} />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
 
   return (
     <div className="app-shell">
@@ -94,11 +100,12 @@ export default function App() {
           )}
           <div className="container-fluid px-0">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/productos" element={<Productos />} />
-              <Route path="/categorias" element={<Catalogo key="categorias" tipo="categorias" />} />
-              <Route path="/proveedores" element={<Catalogo key="proveedores" tipo="proveedores" />} />
-              <Route path="/kardex" element={<Kardex />} />
+              <Route path="/login" element={<Navigate to="/" replace />} />
+              <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/productos" element={<ProtectedRoute><Productos /></ProtectedRoute>} />
+              <Route path="/categorias" element={<ProtectedRoute><Catalogo key="categorias" tipo="categorias" /></ProtectedRoute>} />
+              <Route path="/proveedores" element={<ProtectedRoute><Catalogo key="proveedores" tipo="proveedores" /></ProtectedRoute>} />
+              <Route path="/kardex" element={<ProtectedRoute><Kardex /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>
